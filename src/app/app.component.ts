@@ -27,7 +27,7 @@ export class AppComponent {
   observables$: Rx.Observable<string[]>;
   whateverFromPromise: string[];
 
-  merged: Rx.Observable<string[]>;
+  merged: string[] = [];
 
   constructor(private http: Http) {
 
@@ -39,6 +39,15 @@ export class AppComponent {
     this.fruits$ = Rx.Observable.of(this.fruits).delay(3000);;
     this.animals$ = Rx.Observable.of(this.animals).delay(3000);
     this.sports$ = Rx.Observable.of(this.sports).delay(5000);
+
+
+    let subject = new Rx.Subject();
+
+    this.fruits$.subscribe( e => subject.next(e) );
+    this.animals$.subscribe( e => subject.next(e) );
+    this.sports$.subscribe( e => subject.next(e) );
+
+    subject.subscribe( { next: (v: string[]) => this.merged = this.merged.concat(v)})
 
   }
 
