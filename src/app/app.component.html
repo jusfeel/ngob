@@ -1,7 +1,52 @@
 <div class="container">
 
-  {{fruitsData | json}}
+  <div class="row">
+    <div class="col-sm-4">
+      <!-- team members json: {{teamMembers | json}} -->
+      <ul class="list-group well well-lg">
+        <li class="list-group-item-info">Sorted by pipe</li>
+        <li class="list-group-item" *ngFor="let member of teamMembersToPipe | sortPerson ">{{member.firstName}} {{member.lastName}}</li>
+      </ul>
+    </div>
+    <div class="col-sm-8">
+      <div class="row">
+        <div class="col-sm-4">
+          <div>
+            <code>{{person | json}}</code>
+            <div class="form-group">
+              <input class="form-control" type="text" name="firstName" [(ngModel)]="person.firstName"/>
+            </div>
+            <div class="form-group">
+              <input class="form-control" type="text" name="lastName" [(ngModel)]="person.lastName"/>
+            </div>
+            <div class="form-group">
+              <input class="form-control" type="text" name="age" [(ngModel)]="person.age"/>
+           </div>
+            <div class="form-group">
+              <input class="form-control" type="text" name="sex" [(ngModel)]="person.sex"/>
+           </div>
+            <div class="form-group">
+              <input class="form-control" type="text" name="height" [(ngModel)]="person.height">
+            </div>
+            <div class="form-group">
+              <input class="form-control" type="text" name="weight" [(ngModel)]="person.weight">
+            </div>
+            <div class="form-group">
+              <button class="btn btn-primary" (click)="addNewPerson(person)">Add new member</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-8">
+            <ul class="list-group well well-lg">
+              <li class="list-group-item-info">Sorted in component</li>
+              <li class="list-group-item" *ngFor="let member of teamMembersToSort ">{{member.firstName}} {{member.lastName}}</li>
+            </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 
+    <div class="clearfix"></div>
     <div class="well well-lg">
       <h2>Fruits Data Values</h2>
       <ul>
@@ -11,84 +56,84 @@
       </ul>
 
 
-    <div class="clearfix"></div>
+      <div class="clearfix"></div>
 
 
-  <div class="row">
+      <div class="row">
 
 
-    <div class="col-md-6">
-      <h1>Observables</h1>
-      <h4>fruits</h4>
-      <ul class="group-list">
-        <li class="group-list-item" *ngFor="let fruit of fruits$ | async">
-          <i class="fa fa-info"></i> {{fruit}}
-        </li>
-      </ul>
-      <h4>animals</h4>
-      <ul class="group-list">
-        <li class="group-list-item" *ngFor="let animal of animals$ | async">
-          <i class="fa fa-info"></i> {{animal}}
-        </li>
-      </ul>
-      <h4>sports</h4>
-      <ul class="group-list">
-        <li class="group-list-item" *ngFor="let sport of sports$ | async">
-          <i class="fa fa-info"></i> {{sport}}
-        </li>
-      </ul>
-    </div>
+        <div class="col-md-6">
+          <h1>Observables</h1>
+          <h4>fruits</h4>
+          <ul class="group-list">
+            <li class="group-list-item" *ngFor="let fruit of fruits$ | async">
+              <i class="fa fa-info"></i> {{fruit}}
+            </li>
+          </ul>
+          <h4>animals</h4>
+          <ul class="group-list">
+            <li class="group-list-item" *ngFor="let animal of animals$ | async">
+              <i class="fa fa-info"></i> {{animal}}
+            </li>
+          </ul>
+          <h4>sports</h4>
+          <ul class="group-list">
+            <li class="group-list-item" *ngFor="let sport of sports$ | async">
+              <i class="fa fa-info"></i> {{sport}}
+            </li>
+          </ul>
+        </div>
 
 
-    <div class="col-md-6">
-      <h2>Observable <i class="fa fa-smile-o text-success"></i> </h2>
-        <div class="panel well">
-          <div class="panel-heading">
-            <button class="btn btn-primary" (click)="selectObservables('f')">Fruits</button>
-            <button class="btn btn-primary" (click)="selectObservables('a')">Animals</button>
-            <button class="btn btn-primary" (click)="selectObservables('s')">Sports</button>
+        <div class="col-md-6">
+          <h2>Observable <i class="fa fa-smile-o text-success"></i> </h2>
+          <div class="panel well">
+            <div class="panel-heading">
+              <button class="btn btn-primary" (click)="selectObservables('f')">Fruits</button>
+              <button class="btn btn-primary" (click)="selectObservables('a')">Animals</button>
+              <button class="btn btn-primary" (click)="selectObservables('s')">Sports</button>
+            </div>
+            <div class="panel-body">
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of observables$ | async">{{item}}</li>
+              </ul>
+            </div>
           </div>
-          <div class="panel-body">
-            <ul class="list-group">
-            <li class="list-group-item" *ngFor="let item of observables$ | async">{{item}}</li>
-          </ul>
+        </div>
+
+
+        <div class="col-md-6">
+          <h2>Promise <i class="fa fa-frown-o text-danger"></i></h2>
+          <div class="panel well">
+            <div class="panel-heading">
+              <button class="btn btn-primary" (click)="selectPromises('f')">Fruits</button>
+              <button class="btn btn-primary" (click)="selectPromises('a')">Animals</button>
+              <button class="btn btn-primary" (click)="selectPromises('s')">Sports</button>
+            </div>
+            <div class="panel-body">
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of whateverFromPromise">{{item}}</li>
+              </ul>
+            </div>
           </div>
         </div>
-    </div>
 
 
-    <div class="col-md-6">
-      <h2>Promise <i class="fa fa-frown-o text-danger"></i></h2>
-      <div class="panel well">
-        <div class="panel-heading">
-          <button class="btn btn-primary" (click)="selectPromises('f')">Fruits</button>
-          <button class="btn btn-primary" (click)="selectPromises('a')">Animals</button>
-          <button class="btn btn-primary" (click)="selectPromises('s')">Sports</button>
+        <button class="btn btn-primary" (click)="stopSubscribe()">stop loading sports</button>
+
+        <div class="col-md-6">
+          <h2>Merge them into one list <i class="fa fa-superpowers text-success"></i></h2>
+          <div class="panel well" *ngIf="merged">
+            <div class="panel-body">
+              <ul class="list-group">
+                <li class="list-group-item" *ngFor="let item of merged">{{item}}</li>
+              </ul>
+            </div>
+          </div>
         </div>
-        <div class="panel-body">
-          <ul class="list-group">
-            <li class="list-group-item" *ngFor="let item of whateverFromPromise">{{item}}</li>
-          </ul>
-        </div>
+
       </div>
+
+
+
     </div>
-
-
-    <button class="btn btn-primary" (click)="stopSubscribe()">stop loading sports</button>
-
-    <div class="col-md-6">
-      <h2>Merge them into one list <i class="fa fa-superpowers text-success"></i></h2>
-      <div class="panel well" *ngIf="merged">
-        <div class="panel-body">
-          <ul class="list-group">
-            <li class="list-group-item" *ngFor="let item of merged">{{item}}</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-
-
-</div>

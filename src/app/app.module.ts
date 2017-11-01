@@ -6,10 +6,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import 'rxjs/Rx';
 
 import { AppComponent } from './app.component';
+import { SortPersonPipe } from './sort-person.pipe';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SortPersonPipe
   ],
   imports: [
     BrowserModule,

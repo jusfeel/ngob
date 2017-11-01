@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import * as Rx from 'rxjs/Rx';
 import { Http } from '@angular/http';
+import { Person } from './person';
 
 @Component({
   selector: 'app-root',
@@ -36,6 +37,13 @@ export class AppComponent {
   animalSubscription: Rx.Subscription;
   sportSubscription: Rx.Subscription;
 
+
+  team1: Person[] = [];
+  team2: Person[] = [];
+
+  teamMembersToPipe: Person[] = [];
+  teamMembersToSort: Person[] = [];
+  person: Person = new Person();
   constructor(private http: Http) {
 
     this.merged = [];
@@ -61,6 +69,57 @@ export class AppComponent {
 
     subject.subscribe( { next: (v: string[]) => this.merged = this.merged.concat(v)})
 
+
+    "Aaa,Bbb,Ccc,Dcc,Ecc".split(",").map(  (elem, index) => {
+          let p = new Person();
+          p.firstName = elem;
+          p.lastName = elem.concat("asdf");
+          p.age = "23";
+          p.sex = "male";
+          p.weight = "111";
+          p.height = "160";
+          this.team1.push(p);
+      });
+
+    "Tom,Jim,Peter,Cake,Jane".split(",").map(
+        (elem, index) => {
+          let p = new Person();
+          p.firstName = elem;
+          p.lastName = elem.concat("asdf");
+          p.age = "23";
+          p.sex = "male";
+          p.weight = "111";
+          p.height = "160";
+          this.team2.push(p);
+      });
+
+    Rx.Observable.of(this.team1).delay(1000).subscribe(
+        elem => {
+          this.teamMembersToPipe = this.teamMembersToPipe.concat(elem);
+          this.teamMembersToSort = this.teamMembersToSort.concat(elem);
+        }
+      );
+    Rx.Observable.of(this.team2).delay(3000).subscribe(
+        elem => {
+          this.teamMembersToPipe = this.teamMembersToPipe.concat(elem);
+          this.teamMembersToSort = this.teamMembersToSort.concat(elem);
+        }
+      );
+  }
+
+  get teamMembers() : Person[] {
+    return this.teamMembersToSort.sort(
+         (a, b) => (a.firstName < b.firstName) ? 1 : (a.firstName == b.firstName) ? 0 : -1
+      );
+  }
+
+  addNewPerson(person: Person) {
+    this.teamMembersToPipe.push(person);
+    this.teamMembersToSort.push(person);
+    this.teamMembersToSort.sort(
+         (a, b) => (a.firstName < b.firstName) ? 1 : (a.firstName == b.firstName) ? 0 : -1
+      );
+    this.person = new Person();
   }
 
   stopSubscribe() : void {
