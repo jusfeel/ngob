@@ -33,12 +33,15 @@ app.use(express.static(path.join(__dirname, 'server/public')));
 var debounce = require('debounce');
 app.use('/whatever/:id', function(req, res, next) {
   let dataSet;
+
+  console.log("I received: ", req.params.id);
   switch(req.params.id) {
     case "f":
       dataSet = ["apple", "pear", "peach", "banana", "pineapple"];
 
       // the network is bad all of a sudden
       setTimeout(function() {
+        console.log("send res");
         res.json({ data: dataSet });
       }, 3000);
       break;

@@ -1,6 +1,21 @@
 <div class="container">
 
+  {{fruitsData | json}}
+
+    <div class="well well-lg">
+      <h2>Fruits Data Values</h2>
+      <ul>
+        <li class="group-list-item" *ngFor="let f of fruitsData">
+          <h4>{{f}}</h4>
+        </li>
+      </ul>
+
+
+    <div class="clearfix"></div>
+
+
   <div class="row">
+
 
     <div class="col-md-6">
       <h1>Observables</h1>
@@ -59,10 +74,11 @@
     </div>
 
 
+    <button class="btn btn-primary" (click)="stopSubscribe()">stop loading sports</button>
 
     <div class="col-md-6">
       <h2>Merge them into one list <i class="fa fa-superpowers text-success"></i></h2>
-      <div class="panel well">
+      <div class="panel well" *ngIf="merged">
         <div class="panel-body">
           <ul class="list-group">
             <li class="list-group-item" *ngFor="let item of merged">{{item}}</li>

@@ -25,35 +25,54 @@ export class AppComponent {
   sports$: Rx.Observable<string[]>;
 
   observables$: Rx.Observable<string[]>;
+  observables$$: Rx.Observable<string[]>;
   whateverFromPromise: string[];
 
-  merged: string[] = [];
+  merged: string[];
+
+  fruitsData : string[] = undefined;
+
+  fruitsSubscription: Rx.Subscription;
+  animalSubscription: Rx.Subscription;
+  sportSubscription: Rx.Subscription;
 
   constructor(private http: Http) {
 
+    this.merged = [];
     // Observable
     this.fruits  = ["apple", "pear", "peach", "banana", "pineapple"];
     this.animals = ["dogs", "cats", "dolpins", "elephons", "tigers"];
     this.sports  = ["basketball", "soccer", "boxing", "swimming", "running"];
 
-    this.fruits$ = Rx.Observable.of(this.fruits).delay(3000);;
+    this.fruits$ = Rx.Observable.of(this.fruits).delay(1000);
     this.animals$ = Rx.Observable.of(this.animals).delay(3000);
     this.sports$ = Rx.Observable.of(this.sports).delay(5000);
 
+    this.fruits$.subscribe( elem => {
+
+      this.fruitsData = elem;
+    });
 
     let subject = new Rx.Subject();
 
-    this.fruits$.subscribe( e => subject.next(e) );
-    this.animals$.subscribe( e => subject.next(e) );
-    this.sports$.subscribe( e => subject.next(e) );
+    this.fruitsSubscription = this.fruits$.subscribe( e => subject.next(e) );
+    this.animalSubscription = this.animals$.subscribe( e => subject.next(e) );
+    this.sportSubscription = this.sports$.subscribe( e => subject.next(e) );
 
     subject.subscribe( { next: (v: string[]) => this.merged = this.merged.concat(v)})
 
   }
 
+  stopSubscribe() : void {
+    this.sportSubscription.unsubscribe();
+  }
+
   selectObservables(what: string) {
     this.observables$ = this.http.get(`http://localhost:3000/whatever/${what}`).map(
-      response => response.json().data
+      response => {
+
+        return response.json().data;
+      }
       ).catch( error => {
         console.log(error);
         return Rx.Observable.throw(error);
@@ -62,10 +81,21 @@ export class AppComponent {
 
   selectPromises(what: string) {
 
-    this.myAsyncFunction(`http://localhost:3000/whatever/${what}`).then( elem => {
-      console.log(elem);
-      this.whateverFromPromise = JSON.parse(elem).data;
-      });
+    this.observables$$ = this.http.get(`http://localhost:3000/whatever/${what}`).map(
+          response => {
+
+            return response.json().data;
+          }
+          ).catch( error => {
+            console.log(error);
+            return Rx.Observable.throw(error);
+          });
+
+
+    // this.myAsyncFunction(`http://localhost:3000/whatever/${what}`).then( elem => {
+    //   console.log(elem);
+    //   this.whateverFromPromise = JSON.parse(elem).data;
+    //   });
 
   }
 
